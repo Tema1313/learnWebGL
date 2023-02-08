@@ -13,17 +13,33 @@ function main() {
 
   const scene = new THREE.Scene();
 
-  const boxWidth = 2;
+  const boxWidth = 1;
   const boxHeight = 1;
   const boxDepth = 1;
   const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
-  const material = new THREE.MeshBasicMaterial({color: 0x44aa88});  // зеленовато-голубой
+  const material = new THREE.MeshPhongMaterial({color: 0x44aa88});  // Есть световое
 
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
 
-  renderer.render(scene, camera);
+  const color = 0xFFFFFF;
+  const intensity = 1;
+  const light = new THREE.DirectionalLight(color, intensity);
+  light.position.set(-1, 2, 4);
+  scene.add(light);
+
+  function render(time) {
+    time *= 0.001;  // Преобразовать время до секунды
+
+    cube.rotation.x = time;
+    cube.rotation.y = time;
+
+    renderer.render(scene, camera);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
 }
 
 main();
